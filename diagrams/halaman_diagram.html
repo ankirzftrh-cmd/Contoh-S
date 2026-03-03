@@ -94,9 +94,27 @@
             vertical-align: top;
         }
 
-        /* Override Mermaid default font if strictly needed */
+        /* Override Mermaid default font and set container sizes to be much larger */
         .mermaid {
             font-family: 'Times New Roman', Times, serif !important;
+            width: 100%;
+            height: auto;
+            min-height: 500px;
+            /* Enlarge Diagram Size */
+            transform: scale(1.15);
+            /* Magnify */
+            transform-origin: top center;
+        }
+
+        .diagram-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 80px;
+            /* Compensate for scaling overlap */
+            margin-top: 40px;
+            width: 100%;
+            overflow: visible;
         }
     </style>
 </head>
@@ -123,21 +141,22 @@
 
     <div class="diagram-container">
         <div class="mermaid">
-            usecaseDiagram
-            actor "Warga (Pemohon)" as Warga
-            actor "Petugas DPMPTSP" as DPMPTSP
-            actor "Dinas Kesehatan" as DinasKesehatan
-            actor "Dinas Penanaman Modal" as PenanamanModal
+            flowchart LR
+            %% Faking Usecase since Mermaid doesn't natively support usecaseDiagram keyword
+            Warga((Warga <br>Pemohon))
+            DPMPTSP((Petugas <br>DPMPTSP))
+            DinasKesehatan((Dinas <br>Kesehatan))
+            PenanamanModal((Dinas <br>Penanaman Modal))
 
-            package "Sistem Pelayanan Perizinan Terpadu" {
-            usecase "UC-01 Mengelola Akun" as UC1
-            usecase "UC-02 Mengelola Pengajuan Izin" as UC2
-            usecase "UC-03 Melacak Status Izin" as UC3
-            usecase "UC-04 Memverifikasi Berkas Awal" as UC4
-            usecase "UC-05 Menerbitkan Izin" as UC5
-            usecase "UC-06 Verifikasi Rekomendasi" as UC6
-            usecase "Login" as Login
-            }
+            subgraph "Sistem Pelayanan Perizinan Terpadu"
+            UC1([UC-01 Mengelola Akun])
+            UC2([UC-02 Mengelola Pengajuan Izin])
+            UC3([UC-03 Melacak Status Izin])
+            UC4([UC-04 Memverifikasi Berkas Awal])
+            UC5([UC-05 Menerbitkan Izin])
+            UC6([UC-06 Verifikasi Rekomendasi])
+            Login([Login])
+            end
 
             Warga --> UC1
             Warga --> UC2
@@ -152,12 +171,12 @@
 
             PenanamanModal --> Login
 
-            UC1 ..> Login : <<include>>
-                UC2 ..> Login : <<include>>
-                    UC3 ..> Login : <<include>>
-                        UC4 ..> Login : <<include>>
-                            UC5 ..> Login : <<include>>
-                                UC6 ..> Login : <<include>>
+            UC1 -. "<<include>>" .-> Login
+                UC2 -. "<<include>>" .-> Login
+                    UC3 -. "<<include>>" .-> Login
+                        UC4 -. "<<include>>" .-> Login
+                            UC5 -. "<<include>>" .-> Login
+                                UC6 -. "<<include>>" .-> Login
         </div>
         <div class="diagram-title">Gambar 4.1 Use Case Diagram Sistem Pelayanan Perizinan</div>
     </div>
@@ -173,7 +192,7 @@
     <div class="diagram-container">
         <div class="mermaid">
             flowchart TD
-            classDef default font-family:Times New Roman;
+            classDef default font-family:"Times New Roman",font-size:14px;
 
             subgraph Warga [Warga]
             direction TB
